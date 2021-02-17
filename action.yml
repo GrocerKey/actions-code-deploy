@@ -10,11 +10,9 @@ inputs:
     required: true
 runs:
   using: "composite"
-  env:
-    DEPLOYMENT_FILE:${{github.workspace}}\bin\deployment\deployment.bat
   steps:
     -name: Set environment
-       run: ((Get-Content -path ${env:DEPLOYMENT_FILE}) -replace 'development', ${env:ENVIRONMENT} | Set-Content -Path ${env:DEPLOYMENT_FILE})
+       run: ((Get-Content -path ${{github.workspace}}\bin\deployment\deployment.bat -replace 'development', ${env:ENVIRONMENT} | Set-Content -Path ${{github.workspace}}\bin\deployment\deployment.bat
             Get-Content ${env:DEPLOYMENT_FILE}
       shell: cmd
     - name: S3 Upload For Deploy
