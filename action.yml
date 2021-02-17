@@ -1,6 +1,6 @@
 name: 'actions-code-deploy'
 inputs:
-  application-name:  # id of input
+  application-name:
     required: true
   output-directory:
     required:true
