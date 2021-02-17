@@ -11,7 +11,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-      - run: ((Get-Content -path ${{github.workspace}}\bin\deployment\deployment.bat)) -replace 'development', ${{inputs.environment}} | Set-Content -Path ${{github.workspace}}\bin\deployment\deployment.bat
+      - run: ((Get-Content -path ${{github.workspace}}\bin\deployment\deployment.bat)) -replace 'development', '${{inputs.environment}}' | Set-Content -Path ${{github.workspace}}\bin\deployment\deployment.bat
         shell: powershell       
       - run: aws deploy push --application-name  ${{inputs.application-name}} --s3-location s3://${{inputs.s3-bucket}}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
         shell: powershell       
