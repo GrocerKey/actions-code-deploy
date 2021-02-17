@@ -1,0 +1,15 @@
+name: 'actions-code-deploy'
+inputs:
+  application-name:  # id of input
+    required: true
+  output-directory:
+    required:true
+   s3-bucket:
+    required:true
+runs:
+  using: "composite"
+  steps:
+    - run: aws deploy push --application-name  ${inputs.application-name} --s3-location s3://${inputs.s3-bucket}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
+      shell: cmd
+    - run: aws deploy create-deployment --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.application-name}} --deployment-config-name CodeDeployDefault.HalfAtATime
+      shell: cmd
