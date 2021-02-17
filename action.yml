@@ -13,10 +13,10 @@ runs:
   steps:
       - run: ((Get-Content -path ${{github.workspace}}\bin\deployment\deployment.bat -replace 'development', ${env:ENVIRONMENT} | Set-Content -Path ${{github.workspace}}\bin\deployment\deployment.bat
              Get-Content ${env:DEPLOYMENT_FILE}
-       shell: cmd
+      shell: cmd
        
       - run: aws deploy push --application-name  ${inputs.application-name} --s3-location s3://${inputs.s3-bucket}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
-       shell: cmd  
+      shell: cmd  
        
       - run: aws deploy create-deployment --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.application-name}} --deployment-config-name CodeDeployDefault.HalfAtATime
-       shell: cmd
+      shell: cmd
