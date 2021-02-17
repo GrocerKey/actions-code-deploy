@@ -3,12 +3,20 @@ inputs:
   application-name:
     required: true
   output-directory:
-    required:true
+    required: true
   s3-bucket:
-    required:true
+    required: true
+  environment:
+    required: true
 runs:
   using: "composite"
+  env:
+    DEPLOYMENT_FILE:${{github.workspace}}\bin\deployment\deployment.bat
   steps:
+    -name: Set environment
+       run: ((Get-Content -path ${env:DEPLOYMENT_FILE}) -replace 'development', ${env:ENVIRONMENT} | Set-Content -Path ${env:DEPLOYMENT_FILE})
+            Get-Content ${env:DEPLOYMENT_FILE}
+      shell: cmd
     - name: S3 Upload For Deploy
        run: aws deploy push --application-name  ${inputs.application-name} --s3-location s3://${inputs.s3-bucket}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
        shell: cmd
