@@ -12,12 +12,8 @@ runs:
   using: "composite"
   steps:
       - run: ((Get-Content -path ${{github.workspace}}\bin\deployment\deployment.bat)) -replace 'development', '${{inputs.environment}}' | Set-Content -Path ${{github.workspace}}\bin\deployment\deployment.bat
-        shell: powershell       
-      - run: echo "aws deploy push --application-name  ${{inputs.application-name}} --s3-location s3://${{inputs.s3-bucket}}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files"
         shell: powershell
-      - run: aws deploy push --debug --application-name  ${{inputs.application-name}} --s3-location s3://${{inputs.s3-bucket}}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
+      - run: aws deploy push --region us-east-1 --debug --application-name  ${{inputs.application-name}} --s3-location s3://${{inputs.s3-bucket}}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
         shell: powershell       
-      - run: echo "aws deploy create-deployment --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.application-name}} --deployment-config-name CodeDeployDefault.HalfAtATime"
-        shell: powershell
-      - run: aws deploy create-deployment --debug --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.application-name}} --deployment-config-name CodeDeployDefault.HalfAtATime
+      - run: aws deploy create-deployment --region us-east-1 --debug --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.application-name}} --deployment-config-name CodeDeployDefault.HalfAtATime
         shell: powershell
