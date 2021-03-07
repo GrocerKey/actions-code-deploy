@@ -17,5 +17,5 @@ runs:
   steps:     
       - run: aws deploy push --application-name  ${{inputs.application-name}} --s3-location s3://${{inputs.s3-bucket}}/${{inputs.application-name}}.zip --source ${{inputs.output-directory}} --ignore-hidden-files
         shell: powershell       
-      - run: aws deploy create-deployment --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.deployment-group-name}} --deployment-config-name ${{inputs.code-deploy-strategy}}
+      - run: aws deploy create-deployment --application-name ${{inputs.application-name}} --s3-location bucket=${{inputs.s3-bucket}},key=${{inputs.application-name}}.zip,bundleType=zip --deployment-group-name ${{inputs.deployment-group-name}} --deployment-config-name "${{inputs.code-deploy-strategy}}"
         shell: powershell
